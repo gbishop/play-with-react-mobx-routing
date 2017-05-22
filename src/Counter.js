@@ -27,7 +27,7 @@ class Counter {
 
   decrement = action(() => this.count--);
 
-  currentPath = computed(() => `/${this.count}`);
+  currentPath = computed(() => process.env.PUBLIC_URL + `/${this.count}`);
 
   setCount = action((i) => this.count = i);
 

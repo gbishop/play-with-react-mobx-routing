@@ -10,13 +10,16 @@ import { Router } from 'director/build/director';
 import { autorun, useStrict } from 'mobx';
 useStrict(true);
 
+console.log('PUBLIC_URL', process.env.PUBLIC_URL);
+
 function startRouter(store) {
 
+    const baseUrl = process.env.PUBLIC_URL;;
+
     // update state on url change
-    let router = new Router({
-        "/:value": (value) => store.setCount(value),
-        "/": () => store.setCount(0)
-    });
+    let router = new Router();
+    router.on(baseUrl + "/(\\d+)", value => store.setCount(value));
+    router.on(baseUrl + "/", () => store.setCount(0));
     router.configure({
         notfound: () => store.setCount(-1),
         html5history: true
