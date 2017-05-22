@@ -24,6 +24,11 @@ class App extends Component {
           <button onClick={() => counter.increment()}> + </button>
           <button onClick={() => counter.decrement()}> - </button>
         </p>
+        <p>
+          <button onClick={() => counter.fetchCount('/api/count.json')}>
+          fetch
+          </button>
+        </p>
         <DevTools />
       </div>
     );
