@@ -1,10 +1,12 @@
-import { extendObservable, computed } from 'mobx';
+import { extendObservable, computed, action } from 'mobx';
 
 class Counter {
   constructor() {
     extendObservable(this, {
       count: 0,
-      isOdd: computed(() => this.count % 2 === 1)
+      isOdd: computed(() => this.count % 2 === 1),
+      currentPath: computed(() => `/${this.count}`),
+      setCount: action((i) => this.count = i)
     });
   }
 
@@ -15,6 +17,7 @@ class Counter {
   decrement() {
     this.count--;
   }
+
 }
 
 export default Counter;
