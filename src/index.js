@@ -7,7 +7,8 @@ import './index.css';
 // https://github.com/flatiron/director/issues/349 explains
 // why I need the strange path.
 import { Router } from 'director/build/director';
-import { autorun } from 'mobx';
+import { autorun, useStrict } from 'mobx';
+useStrict(true);
 
 function startRouter(store) {
 

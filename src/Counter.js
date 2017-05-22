@@ -18,22 +18,20 @@ class Counter {
   constructor() {
     extendObservable(this, {
       count: 0,
-      isOdd: computed(() => this.count % 2 === 1),
-      currentPath: computed(() => `/${this.count}`)
     });
   }
 
-  increment() {
-    this.count++;
-  }
+  isOdd = computed(() => this.count % 2 === 1);
 
-  decrement() {
-    this.count--;
-  }
+  increment = action(() => this.count++);
+
+  decrement = action(() => this.count--);
+
+  currentPath = computed(() => `/${this.count}`);
 
   setCount = action((i) => this.count = i);
 
-  fetchCount = action(path => {
+  fetchCount = (path => {
     simpleFetch(path)
       .then(action(data => {
         this.count = data.value;
