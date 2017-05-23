@@ -13,7 +13,7 @@
   "devDependencies": {
     "react-scripts": "1.0.4"
   },
-  "proxy": { "/api": { "target":"http://gb.cs.unc.edu/~gb/tmp/"}},
+  "proxy": { "/api": { "target":"http://gb.cs.unc.edu/"}},
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
