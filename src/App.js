@@ -4,6 +4,19 @@ import DevTools from 'mobx-react-devtools';
 import logo from './logo.svg';
 import './App.css';
 
+class Link extends Component {
+  handleClick = (e) => {
+    console.log(e);
+    console.log('history', window.history);
+    e.preventDefault();
+    window.history.pushState(null, null, this.props.href);
+  }
+  render() {
+    return (
+      <a href={this.props.href} onClick={this.handleClick}>{this.props.children}</a>
+    ) }
+}
+
 class App extends Component {
   render() {
     const {counter} = this.props;
@@ -29,6 +42,7 @@ class App extends Component {
           fetch
           </button>
         </p>
+        <p><Link href="/1000">Go to 1000</Link></p>
         <DevTools />
       </div>
     );
