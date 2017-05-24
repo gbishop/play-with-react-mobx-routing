@@ -7,10 +7,8 @@ import './index.css';
 // https://github.com/flatiron/director/issues/349 explains
 // why I need the strange path.
 import { Router } from 'director/build/director';
-import { autorun, useStrict } from 'mobx';
+import { autorun, useStrict, action } from 'mobx';
 useStrict(true);
-
-console.log('PUBLIC_URL', process.env.PUBLIC_URL);
 
 function startRouter(store) {
 
@@ -18,8 +16,8 @@ function startRouter(store) {
 
     // update state on url change
     let router = new Router();
-    router.on(baseUrl + "/(\\d+)", value => store.setCount(value));
-    router.on(baseUrl + "/", () => store.setCount(0));
+    router.on(baseUrl + "/(\\d+)", action(value => store.setCount(value)));
+    router.on(baseUrl + "/", action(() => store.setCount(0)));
     router.configure({
         notfound: () => store.setCount(-1),
         html5history: true
@@ -28,9 +26,10 @@ function startRouter(store) {
 
     // update url on state changes
     autorun(() => {
-        const path = store.currentPath
-        if (path !== window.location.pathname)
-                window.history.pushState(null, null, path)
+        const path = store.currentPath.toJSON();
+        if (path !== window.location.pathname) {
+          window.history.pushState(null, null, path)
+        }
     })
 
 }
