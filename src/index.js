@@ -28,6 +28,7 @@ function startRouter(store) {
     autorun(() => {
         const path = store.currentPath.toJSON();
         if (path !== window.location.pathname) {
+          console.log('push', path, window.location.pathname);
           window.history.pushState(null, null, path)
         }
     })
