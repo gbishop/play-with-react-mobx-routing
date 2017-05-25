@@ -4,16 +4,19 @@ import DevTools from 'mobx-react-devtools';
 import logo from './logo.svg';
 import './App.css';
 
+// Try a hack Link component. I'm not convinced this is the right way.
+// Maybe they just explicitly use onClick to update the state? 
+// What should the href be? The aly checker doesn't like #. Ideally, I
+// think it would be the value of currentPath after the update. How to
+// generate that?
 class Link extends Component {
   handleClick = (e) => {
-    console.log(e);
-    console.log('history', window.history);
     e.preventDefault();
-    window.history.pushState(null, null, this.props.href);
+    this.props.action(this.props.value);
   }
   render() {
     return (
-      <a href={this.props.href} onClick={this.handleClick}>{this.props.children}</a>
+      <a href={'/'+this.props.value} onClick={this.handleClick}>{this.props.children}</a>
     ) }
 }
 
@@ -42,7 +45,7 @@ class App extends Component {
           fetch
           </button>
         </p>
-        <p><Link href="/1000">Go to 1000</Link></p>
+        <p><Link action={counter.setCount} value="1000">Go to 1000</Link></p>
         <DevTools />
       </div>
     );
