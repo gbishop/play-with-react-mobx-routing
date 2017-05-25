@@ -29,7 +29,7 @@ class Counter {
 
   currentPath = computed(() => process.env.PUBLIC_URL + `/${this.count}`);
 
-  setCount = action((i) => this.count = i);
+  setCount = action((i) => this.count = +i);
 
   fetchCount = (path => {
     simpleFetch(path)
