@@ -19,7 +19,7 @@ class Counter {
     extendObservable(this, {
       count: 0,
 
-      currentPath: computed(() => process.env.PUBLIC_URL + `/${this.count}`),
+      currentPath: computed(() => `/${this.count}`),
 
       isOdd: computed(() => this.count % 2 === 1)
     });

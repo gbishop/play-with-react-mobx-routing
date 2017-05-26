@@ -26,7 +26,7 @@ function startRouter(store) {
 
     // update url on state changes
     autorun(() => {
-        const path = store.currentPath;
+        const path = baseUrl + store.currentPath;
         if (path !== window.location.pathname) {
           console.log('push', path, window.location.pathname);
           window.history.pushState(null, null, path)
