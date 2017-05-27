@@ -1,4 +1,5 @@
-import { extendObservable, computed, action } from 'mobx';
+import { extendObservable, computed, action, reaction } from 'mobx';
+import { fromPromise } from 'mobx-utils';
 
 function simpleFetch(url) {
     return new Promise((resolve, reject) => {
@@ -14,32 +15,30 @@ function simpleFetch(url) {
     });
 }
 
-class Counter {
+class Store {
   constructor() {
     extendObservable(this, {
-      count: 0,
+      bookid: 0,
+      book: null,
+      pageno: 1,
 
-      currentPath: computed(() => `/${this.count}`),
+      // this needs to be inside the extendObservable, I'm not sure why
+      currentPath: computed(() => 
+        `/${this.bookid}` + this.pageno > 1 ? `/${this.pageno}` : ''),
 
-      isOdd: computed(() => this.count % 2 === 1)
     });
+    // fetch the book when the id changes
+    // figure out when to dispose of this
+    this.fetchHandler = reaction(
+      () => this.bookid,
+      (bookid) => {
+        console.log('fetchBook', this.bookid);
+        this.book = fromPromise(simpleFetch(`/api/sharedbooks/${this.bookid}.json`))
+      });
   }
 
-  increment = action(() => this.count++);
+  setIdPage = action((id, page) => { this.bookid=id; this.pageno=page } );
 
-  decrement = action(() => this.count--);
-
-  setCount = action((i) => this.count = +i);
-
-  fetchCount = (path => {
-    simpleFetch(path)
-      .then(action(data => {
-        this.count = data.value;
-      }))
-      .catch(err => {
-        console.log('error', err);
-      });
-  });
 }
 
-export default Counter;
+export default Store;

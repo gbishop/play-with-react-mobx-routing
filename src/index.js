@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Counter from './Counter';
+import Store from './Store';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import './index.css';
 // https://github.com/flatiron/director/issues/349 explains
 // why I need the strange path.
 import { Router } from 'director/build/director';
-import { autorun, useStrict, action } from 'mobx';
+import { autorun, useStrict } from 'mobx';
 useStrict(true);
 
 function startRouter(store) {
@@ -16,10 +16,10 @@ function startRouter(store) {
 
     // update state on url change
     let router = new Router();
-    router.on(baseUrl + "/(\\d+)", action(value => store.setCount(value)));
-    router.on(baseUrl + "/", action(() => store.setCount(0)));
+    router.on(baseUrl + "/(\\d+)", id => store.setIdPage(id, 1));
+    router.on(baseUrl + "/(\\d+)/(\\d+)", (id, pageno) => store.setIdPage(id, pageno));
     router.configure({
-        notfound: () => store.setCount(-1),
+        notfound: () => store.setIdPage(-1, 1),
         html5history: true
     });
     router.init();
@@ -34,12 +34,12 @@ function startRouter(store) {
     })
 
 }
-const store = new Counter();
+const store = new Store();
 
 startRouter(store);
 
 ReactDOM.render(
-  <App counter={store} />, 
+  <App store={store} />, 
   document.getElementById('root')
 );
 registerServiceWorker();
