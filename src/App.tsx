@@ -1,9 +1,15 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import { observer } from 'mobx-react';
-import logo from './logo.svg';
 import './App.css';
+import Counter from './Counter';
 
-function simpleFetch(url) {
+const logo = require('./logo.svg');
+
+interface ValueType {
+  value: number;
+}
+
+function simpleFetch(url: string): Promise<ValueType> {
     return new Promise((resolve, reject) => {
         window.fetch(url)
             .then(res => {
@@ -17,8 +23,13 @@ function simpleFetch(url) {
     });
 }
 
-class App extends Component {
-  fetchCount(path) {
+interface AppProps {
+  counter: Counter;
+}
+
+@observer
+class App extends React.Component<AppProps, void> {
+  fetchCount(path: string) {
     simpleFetch(path)
       .then((data) => {
         console.log('data', data);
@@ -45,7 +56,7 @@ class App extends Component {
         </p>
         <p>
           <button onClick={counter.increment}> + </button>
-          <button onClick={counter.decrement}> - </button>
+          <button onClick={() => counter.decrement()}> - </button>
         </p>
         <p>
           <button onClick={() => this.fetchCount('/api/count.json')}>
@@ -57,4 +68,4 @@ class App extends Component {
   }
 }
 
-export default observer(App);
+export default App;
